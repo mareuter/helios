@@ -160,3 +160,7 @@ cython_debug/
 #.idea/
 
 .vscode
+.pre-commit-config.yaml
+.flake8
+.isort.cfg
+.mypy.ini
