@@ -1,0 +1,3 @@
+[submodule "pre-commit-config"]
+	path = pre-commit-config
+	url = https://github.com/mareuter/pre-commit-config.git
