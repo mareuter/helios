@@ -19,3 +19,11 @@ Next run the command to install the pre-commit configuation and associated indiv
     $ ./pre-commit-config/setup_pre_commit_config.py
 
 During the first commit, the hook environment will initialize and then run all of the require steps.
+
+The web service uses the `skyfield <https://rhodesmill.org/skyfield>`_ package for sun information.
+The package requires an ephemeris file.
+To grab the file, run the following from the top-level of the repository.
+
+.. code-block:: bash
+
+    $ python bin/setup_skyfield.py
