@@ -1,1 +1,3 @@
 fastapi
+skyfield
+uvicorn[standard]
