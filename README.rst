@@ -16,7 +16,7 @@ Next run the command to install the pre-commit configuation and associated indiv
 
 .. code-block:: bash
 
-    $ ./pre-commit-config/setup_pre_commit_config.py
+    $ ./pre-commit-config/setup_pre_commit_config.py --mypy-extras=`cat requirements/mypy-extras.txt`
 
 During the first commit, the hook environment will initialize and then run all of the require steps.
 
