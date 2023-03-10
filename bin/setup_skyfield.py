@@ -8,7 +8,8 @@ from skyfield.api import Loader
 
 
 def main() -> None:
-    root = pathlib.Path(__file__)  # .parents[1]
+    root = pathlib.Path(__file__).parents[1]
+    print(root)
     load = Loader(root / "app" / "skyfield")
     load("de421.bsp")
 
