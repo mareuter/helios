@@ -8,9 +8,10 @@ import math
 from datetime import datetime
 from typing import Any
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, HTTPException, Query, status
 from pydantic import BaseModel
 
+from .exceptions import BadTimezone
 from .helios import Helios
 
 app = FastAPI()
@@ -34,20 +35,32 @@ async def root() -> dict:
 
 @app.get("/sky_transitions")
 async def sky_transitions(
-    cdatetime: float,
-    tz: str,
+    cdatetime: float = Query(
+        title="current_datetime_timestamp",
+        description="The UNIX timestamp for the current date/time.",
+    ),
+    tz: str = Query(
+        title="timezone",
+        description="The time zone associated with the current date/time.",
+    ),
     lat: float = Query(
         le=math.fabs(90.0),
         title="latitude",
-        description="The location's latitude. North is positive. South is negative",
+        description="The location's latitude coordinate. North is positive. South is negative",
     ),
     lon: float = Query(
         le=math.fabs(180.0),
-        title="latitude",
-        description="The location's latitude coordinate. East is positive. West is negative.",
+        title="longitude",
+        description="The location's longtude coordinate. East is positive. West is negative.",
     ),
 ) -> Any:
     h = Helios()
-    st = h.sky_transitions(lat, lon, datetime.fromtimestamp(cdatetime), tz)
+    try:
+        st = h.sky_transitions(lat, lon, datetime.fromtimestamp(cdatetime), tz)
+    except BadTimezone:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Bad time zone given: {tz}",
+        )
     output = {k.replace(" ", "_").lower(): v.timestamp() for k, v in st.items()}
     return output

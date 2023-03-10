@@ -8,8 +8,11 @@ from datetime import datetime, timedelta
 from importlib.resources import files
 
 from pytz import timezone
+from pytz.exceptions import UnknownTimeZoneError
 from skyfield import almanac
 from skyfield.api import load, load_file, wgs84
+
+from .exceptions import BadTimezone
 
 DATA_PATH = files("app.skyfield").joinpath("de421.bsp")
 
@@ -51,7 +54,10 @@ class Helios:
             The object containing the name of the sky transition as the key
             and the sky transition date/time.
         """
-        zone = timezone(location_timezone)
+        try:
+            zone = timezone(location_timezone)
+        except UnknownTimeZoneError:
+            raise BadTimezone
         now = zone.localize(current_datetime)
         midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
         next_midnight = midnight + timedelta(days=1)

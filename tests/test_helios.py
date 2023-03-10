@@ -4,6 +4,9 @@
 
 from datetime import datetime
 
+import pytest
+
+from app.exceptions import BadTimezone
 from app.helios import Helios
 
 
@@ -30,3 +33,14 @@ def test_sky_transitions() -> None:
     assert sky_transitions["Civil Dusk"].timestamp() == 1677887774.573878
     assert sky_transitions["Nautical Dusk"].timestamp() == 1677889681.943577
     assert sky_transitions["Astronomical Dusk"].timestamp() == 1677891594.401842
+
+
+def test_bad_timezone() -> None:
+    h = Helios()
+    current_datetime = datetime(2023, 3, 3, 14, 56, 0)
+    timezone = "USA/Santiago"
+    latitude = 40.8939
+    longitude = -83.8917
+
+    with pytest.raises(BadTimezone):
+        h.sky_transitions(latitude, longitude, current_datetime, timezone)

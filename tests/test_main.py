@@ -46,3 +46,17 @@ def test_bad_location() -> None:
             assert info["msg"] == "ensure this value is less than or equal to 90.0"
         if "lon" in info["loc"]:
             assert info["msg"] == "ensure this value is less than or equal to 180.0"
+
+
+def test_bad_timezone() -> None:
+    response = client.get(
+        "/sky_transitions",
+        params={
+            "lat": 40.8939,
+            "lon": -83.8917,
+            "cdatetime": 1677880560.0,
+            "tz": "USA/Santiago",
+        },
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"] == "Bad time zone given: USA/Santiago"
