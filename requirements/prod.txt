@@ -1,1 +1,4 @@
-fastapi
+fastapi==0.92.0
+pytz==2022.7.1
+skyfield==1.45
+uvicorn[standard]==0.20.0
