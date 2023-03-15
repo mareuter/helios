@@ -1,6 +1,9 @@
 FROM python:3.10-slim
 
 LABEL maintainer="Michael Reuter"
+LABEL org.opencontainers.image.source=https://github.com/mareuter/helios
+LABEL org.opencontainers.image.description="Webservice for sun information."
+LABEL org.opencontainers.image.license=BSD-3-Clause
 
 WORKDIR /
 RUN pip install --upgrade pip
@@ -19,4 +22,6 @@ ENV PATH="/home/fastapi/.local/bin:${PATH}"
 RUN pip install --user -r requirements.txt && \
     python bin/setup_skyfield.py
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0"]
