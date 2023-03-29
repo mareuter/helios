@@ -6,15 +6,22 @@ __all__ = ["app"]
 
 import math
 from datetime import datetime
+from importlib.resources import files
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Query, status
+from fastapi import FastAPI, HTTPException, Query, Request, status
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from .exceptions import BadTimezone
+from .formatters import date_format
 from .helios import Helios
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory=files("app.static")), name="static")
+templates = Jinja2Templates(directory=files("app.templates"))
 
 
 class SkyTransitions(BaseModel):
@@ -26,6 +33,10 @@ class SkyTransitions(BaseModel):
     civil_dusk: float
     nautical_dusk: float
     astronomical_dusk: float
+
+
+class DayInformation(SkyTransitions):
+    day_length: float
 
 
 @app.get("/")
@@ -64,3 +75,17 @@ async def sky_transitions(
         )
     output = {k.replace(" ", "_").lower(): v.timestamp() for k, v in st.items()}
     return output
+
+
+@app.get("/day_information", response_class=HTMLResponse)
+async def day_information(
+    request: Request,
+    tz: str = Query(
+        title="timezone",
+        description="The time zone associated with the current date/time.",
+    ),
+) -> Any:
+    localtime = Helios.get_localtime(tz)
+    return templates.TemplateResponse(
+        "day_information.html", {"request": request, "date": date_format(localtime)}
+    )

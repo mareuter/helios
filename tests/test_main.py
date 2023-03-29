@@ -2,6 +2,9 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+import datetime
+from unittest.mock import patch
+
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -60,3 +63,21 @@ def test_bad_timezone() -> None:
     )
     assert response.status_code == 422
     assert response.json()["detail"] == "Bad time zone given: USA/Santiago"
+
+
+def test_day_information() -> None:
+    utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.timezone.utc)
+    with patch("app.helios.Helios.get_utc", return_value=utc):
+        response = client.get(
+            "/day_information",
+            params={
+                "lat": 40.8939,
+                "lon": -83.8917,
+                "cdatetime": 1677880560.0,
+                "tz": "US/Eastern",
+            },
+        )
+        assert response.status_code == 200
+        assert response.template.name == "day_information.html"
+        assert "request" in response.context
+        assert "Sun Information for March 3, 2023" in response.text
