@@ -81,3 +81,4 @@ def test_day_information() -> None:
         assert response.template.name == "day_information.html"
         assert "request" in response.context
         assert "Sun Information for March 3, 2023" in response.text
+        assert "Astronomical Dawn" in response.text

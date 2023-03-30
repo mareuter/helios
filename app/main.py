@@ -16,7 +16,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from .exceptions import BadTimezone
-from .formatters import date_format
+from .formatters import date_format, time_format
 from .helios import Helios
 
 app = FastAPI()
@@ -84,8 +84,28 @@ async def day_information(
         title="timezone",
         description="The time zone associated with the current date/time.",
     ),
+    lat: float = Query(
+        le=math.fabs(90.0),
+        title="latitude",
+        description="The location's latitude coordinate. North is positive. South is negative",
+    ),
+    lon: float = Query(
+        le=math.fabs(180.0),
+        title="longitude",
+        description="The location's longtude coordinate. East is positive. West is negative.",
+    ),
 ) -> Any:
-    localtime = Helios.get_localtime(tz)
+    h = Helios()
+    localtime = h.get_localtime(tz)
+    try:
+        st = h.sky_transitions(lat, lon, localtime.replace(tzinfo=None), tz)
+    except BadTimezone:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Bad time zone given: {tz}",
+        )
+    output = {k.replace(" ", "_").lower(): time_format(v) for k, v in st.items()}
     return templates.TemplateResponse(
-        "day_information.html", {"request": request, "date": date_format(localtime)}
+        "day_information.html",
+        {"request": request, "date": date_format(localtime), **output},
     )
