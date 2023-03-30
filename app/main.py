@@ -16,7 +16,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from .exceptions import BadTimezone
-from .formatters import date_format, time_format
+from .formatters import date_format, day_length_format, time_format
 from .helios import Helios
 
 app = FastAPI()
@@ -105,7 +105,13 @@ async def day_information(
             detail=f"Bad time zone given: {tz}",
         )
     output = {k.replace(" ", "_").lower(): time_format(v) for k, v in st.items()}
+    day_length = st["Sunset"] - st["Sunrise"]
     return templates.TemplateResponse(
         "day_information.html",
-        {"request": request, "date": date_format(localtime), **output},
+        {
+            "request": request,
+            "date": date_format(localtime),
+            **output,
+            "day_length": day_length_format(day_length),
+        },
     )

@@ -21,6 +21,25 @@ def date_format(date: datetime) -> str:
     return date.strftime("%B %-d, %Y")
 
 
+def day_length_format(length: timedelta) -> str:
+    """Format length of day into hours, minutes and seconds
+
+    Parameters
+    ----------
+    length : timedelta
+        The calculated length of day.
+
+    Returns
+    -------
+    str
+        The formatted day length string.
+    """
+    hours = int(length.seconds / 3600)
+    minutes = int(length.seconds % 3600 / 60)
+    seconds = int(length.seconds % 3600 % 60)
+    return f"{hours} hours, {minutes} minutes and {seconds} seconds"
+
+
 def time_format(time: datetime) -> str:
     """Format time to Hours(24):Minutes(zero padded)
 
