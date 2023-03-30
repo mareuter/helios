@@ -17,62 +17,56 @@
       Sun Information for {{ date }}
     </div>
   </div>
-  <nav class="level is-warning">
-    <div class="level-item has-text-centered notification is-warning">
-      <div>
-        <p class="heading">Astronomical Dawn</p>
-        <p class="title">{{ astronomical_dawn }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Nautical Dawn</p>
-        <p class="title">{{ nautical_dawn }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Civil Dawn</p>
-        <p class="title">{{ civil_dawn }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Sunrise</p>
-        <p class="title">{{ sunrise }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Sunset</p>
-        <p class="title">{{ sunset }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Civil Dusk</p>
-        <p class="title">{{ civil_dusk }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Nautical Dusk</p>
-        <p class="title">{{ nautical_dusk }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered is-warning">
-      <div>
-        <p class="heading">Astronomical Dusk</p>
-        <p class="title">{{ astronomical_dusk }}</p>
-      </div>
-    </div>
-  </nav>
   <div class="tile is-ancestor">
-    <div class="tile is-4 notification is-warning">
-      <!-- 1/3 -->
-    </div>
-    <div class="tile notification is-warning">
-      <!-- This tile will take the rest: 2/3 -->
+    <div class="tile is-vertical">
+      <div class="tile is-parent">
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+            <p class="heading">Astronomical Dawn</p>
+            <p class="title">{{ astronomical_dawn }}</p>
+        </div>
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <div>
+            <p class="heading">Nautical Dawn</p>
+            <p class="title">{{ nautical_dawn }}</p>
+          </div>
+        </div>
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <div>
+            <p class="heading">Civil Dawn</p>
+            <p class="title">{{ civil_dawn }}</p>
+          </div>
+        </div>
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <div>
+            <p class="heading">Sunset</p>
+            <p class="title">{{ sunset }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <p class="heading">Sunset</p>
+          <p class="title">{{ sunset }}</p>
+        </div>
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <div>
+            <p class="heading">Civil Dusk</p>
+            <p class="title">{{ civil_dusk }}</p>
+          </div>
+        </div>
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <div>
+            <p class="heading">Nautical Dusk</p>
+            <p class="title">{{ nautical_dusk }}</p>
+          </div>
+        </div>
+        <div class="tile is-3 is-child box has-text-centered notification is-warning">
+          <div>
+            <p class="heading">Astronomical Dusk</p>
+            <p class="title">{{ astronomical_dusk }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   </body>
