@@ -14,14 +14,15 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="notification is-warning has-text-centered is-size-3">
-      Sun Information for {{ date }}
-    </div>
-  </div>
-  <div class="block"></div>
-  <div class="tile is-ancestor">
+  <div class="tile is-ancestor mx-3">
     <div class="tile is-vertical">
+      <div class="tile is-parent">
+        <div class="tile is-12 is-child box has-text-centered notification is-warning">
+          <p class="notification is-warning has-text-centered is-size-3">
+            Sun Information for {{ date }}
+          </p>
+        </div>
+      </div>
       <div class="tile is-parent">
         <div class="tile is-3 is-child box has-text-centered notification is-warning">
           <p class="heading">Astronomical Dawn</p>
