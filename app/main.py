@@ -10,7 +10,7 @@ from importlib.resources import files
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query, Request, status
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -42,6 +42,16 @@ class DayInformation(SkyTransitions):
 @app.get("/")
 async def root() -> dict:
     return {"msg": "This is a web service, nothing to see here."}
+
+
+@app.get("/favicon.ico")
+async def favicon() -> FileResponse:
+    file_name = "helios.png"
+    file_path = files("app.static").joinpath(file_name)
+    return FileResponse(
+        path=file_path,
+        headers={"Content-Disposition": f"attachment; filename={file_name}"},
+    )
 
 
 @app.get("/sky_transitions")
