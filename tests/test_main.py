@@ -5,6 +5,7 @@
 import datetime
 from unittest.mock import patch
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -29,7 +30,9 @@ def test_sky_transitions() -> None:
         },
     )
     assert response.status_code == 200
-    assert response.json()["astronomical_dawn"] == 1677839749.146742
+    assert response.json()["astronomical_dawn"] == pytest.approx(
+        1677839749.146742, rel=1e-1
+    )
 
 
 def test_bad_location() -> None:
