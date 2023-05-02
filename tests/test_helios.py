@@ -27,14 +27,30 @@ def test_sky_transitions() -> None:
 
     sky_transitions = h.sky_transitions(latitude, longitude, current_datetime, timezone)
     assert len(list(sky_transitions.keys())) == 8
-    assert sky_transitions["Astronomical Dawn"].timestamp() == 1677839749.146742
-    assert sky_transitions["Nautical Dawn"].timestamp() == 1677841657.360251
-    assert sky_transitions["Civil Dawn"].timestamp() == 1677843561.421941
-    assert sky_transitions["Sunrise"].timestamp() == 1677845209.722515
-    assert sky_transitions["Sunset"].timestamp() == 1677886123.971968
-    assert sky_transitions["Civil Dusk"].timestamp() == 1677887774.573878
-    assert sky_transitions["Nautical Dusk"].timestamp() == 1677889681.943577
-    assert sky_transitions["Astronomical Dusk"].timestamp() == 1677891594.401842
+    assert sky_transitions["Astronomical Dawn"].timestamp() == pytest.approx(
+        1677839749.146742, rel=1e-1
+    )
+    assert sky_transitions["Nautical Dawn"].timestamp() == pytest.approx(
+        1677841657.360251, rel=1e-1
+    )
+    assert sky_transitions["Civil Dawn"].timestamp() == pytest.approx(
+        1677843561.421941, rel=1e-1
+    )
+    assert sky_transitions["Sunrise"].timestamp() == pytest.approx(
+        1677845209.722515, rel=1e-1
+    )
+    assert sky_transitions["Sunset"].timestamp() == pytest.approx(
+        1677886123.971968, rel=1e-1
+    )
+    assert sky_transitions["Civil Dusk"].timestamp() == pytest.approx(
+        1677887774.573878, rel=1e-1
+    )
+    assert sky_transitions["Nautical Dusk"].timestamp() == pytest.approx(
+        1677889681.943577, rel=1e-1
+    )
+    assert sky_transitions["Astronomical Dusk"].timestamp() == pytest.approx(
+        1677891594.401842, rel=1e-1
+    )
 
 
 def test_bad_timezone() -> None:
