@@ -49,9 +49,9 @@ def test_bad_location() -> None:
     detail = response.json()["detail"]
     for info in detail:
         if "lat" in info["loc"]:
-            assert info["msg"] == "ensure this value is less than or equal to 90.0"
+            assert info["msg"] == "Input should be less than or equal to 90"
         if "lon" in info["loc"]:
-            assert info["msg"] == "ensure this value is less than or equal to 180.0"
+            assert info["msg"] == "Input should be less than or equal to 180"
 
 
 def test_bad_timezone() -> None:
