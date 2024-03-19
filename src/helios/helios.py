@@ -14,7 +14,7 @@ from skyfield.api import load, load_file, wgs84
 
 from .exceptions import BadTimezone
 
-DATA_PATH = files("app.skyfield").joinpath("de421.bsp")
+DATA_PATH = files("helios.skyfield").joinpath("de421.bsp")
 
 
 class Helios:

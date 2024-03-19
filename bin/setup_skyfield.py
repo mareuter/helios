@@ -9,7 +9,7 @@ from skyfield.api import Loader
 
 def main() -> None:
     root = pathlib.Path(__file__).parents[1]
-    load = Loader(root / "app" / "skyfield")
+    load = Loader(root / "src" / "helios" / "skyfield")
     load("de421.bsp")
 
 

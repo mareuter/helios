@@ -2,8 +2,6 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-__all__ = ["app"]
-
 import math
 from datetime import datetime
 from importlib.resources import files
@@ -19,9 +17,11 @@ from .exceptions import BadTimezone
 from .formatters import date_format, day_length_format, time_format
 from .helios import Helios
 
+__all__ = ["app"]
+
 app = FastAPI()
-app.mount("/static", StaticFiles(directory=files("app.static")), name="static")
-templates = Jinja2Templates(directory=files("app.templates"))
+app.mount("/static", StaticFiles(directory=files("helios.static")), name="static")
+templates = Jinja2Templates(directory=files("helios.templates"))
 
 
 class SkyTransitions(BaseModel):
@@ -47,7 +47,7 @@ async def root() -> dict:
 @app.get("/favicon.ico")
 async def favicon() -> FileResponse:
     file_name = "helios.png"
-    file_path = files("app.static").joinpath(file_name)
+    file_path = files("helios.static").joinpath(file_name)
     return FileResponse(
         path=file_path,
         headers={"Content-Disposition": f"attachment; filename={file_name}"},

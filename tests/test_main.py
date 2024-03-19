@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app
+from helios.main import app
 
 client = TestClient(app)
 
@@ -70,7 +70,7 @@ def test_bad_timezone() -> None:
 
 def test_day_information() -> None:
     utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.timezone.utc)
-    with patch("app.helios.Helios.get_utc", return_value=utc):
+    with patch("helios.helios.Helios.get_utc", return_value=utc):
         response = client.get(
             "/day_information",
             params={
