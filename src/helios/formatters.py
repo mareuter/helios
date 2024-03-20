@@ -1,12 +1,16 @@
-# Copyright 2023 Michael Reuter. All rights reserved.
+# Copyright 2023-2024 Michael Reuter. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
+
+"""Module containing formatting support."""
+
+from __future__ import annotations
 
 from datetime import datetime, timedelta
 
 
 def date_format(date: datetime) -> str:
-    """Format date to Month Name Day, Year
+    """Format date to Month Name Day, Year.
 
     Parameters
     ----------
@@ -22,7 +26,7 @@ def date_format(date: datetime) -> str:
 
 
 def day_length_format(length: timedelta) -> str:
-    """Format length of day into hours, minutes and seconds
+    """Format length of day into hours, minutes and seconds.
 
     Parameters
     ----------
@@ -41,7 +45,7 @@ def day_length_format(length: timedelta) -> str:
 
 
 def time_format(time: datetime) -> str:
-    """Format time to Hours(24):Minutes(zero padded)
+    """Format time to Hours(24):Minutes(zero padded).
 
     Times are rounded to nearest minute to agree with the US Naval Observatory.
 

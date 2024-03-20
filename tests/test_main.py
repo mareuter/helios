@@ -1,14 +1,17 @@
-# Copyright 2023 Michael Reuter. All rights reserved.
+# Copyright 2023-2024 Michael Reuter. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
+
+"""Tests for application routes."""
+
+from __future__ import annotations
 
 import datetime
 from unittest.mock import patch
 
-import pytest
 from fastapi.testclient import TestClient
-
 from helios.main import app
+import pytest
 
 client = TestClient(app)
 
@@ -30,9 +33,7 @@ def test_sky_transitions() -> None:
         },
     )
     assert response.status_code == 200
-    assert response.json()["astronomical_dawn"] == pytest.approx(
-        1677839749.146742, rel=1e-1
-    )
+    assert response.json()["astronomical_dawn"] == pytest.approx(1677839749.146742, rel=1e-1)
 
 
 def test_bad_location() -> None:
@@ -69,7 +70,7 @@ def test_bad_timezone() -> None:
 
 
 def test_day_information() -> None:
-    utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.timezone.utc)
+    utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.UTC)
     with patch("helios.solar_calculator.SolarCalculator.get_utc", return_value=utc):
         response = client.get(
             "/day_information",

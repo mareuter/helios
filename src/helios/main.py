@@ -1,10 +1,14 @@
-# Copyright 2023 Michael Reuter. All rights reserved.
+# Copyright 2023-2024 Michael Reuter. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-import math
+"""Main application definition."""
+
+from __future__ import annotations
+
 from datetime import datetime
 from importlib.resources import files
+import math
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query, Request, status
@@ -20,8 +24,8 @@ from .solar_calculator import SolarCalculator
 __all__ = ["app"]
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory=files("helios.static")), name="static")
-templates = Jinja2Templates(directory=files("helios.templates"))
+app.mount("/static", StaticFiles(directory=str(files("helios.static"))), name="static")
+templates = Jinja2Templates(directory=str(files("helios.templates")))
 
 
 class SkyTransitions(BaseModel):
@@ -40,14 +44,14 @@ class DayInformation(SkyTransitions):
 
 
 @app.get("/")
-async def root() -> dict:
+async def root() -> dict[str, str]:
     return {"msg": "This is a web service, nothing to see here."}
 
 
 @app.get("/favicon.ico")
 async def favicon() -> FileResponse:
     file_name = "helios.png"
-    file_path = files("helios.static").joinpath(file_name)
+    file_path = str(files("helios.static").joinpath(file_name))
     return FileResponse(
         path=file_path,
         headers={"Content-Disposition": f"attachment; filename={file_name}"},
@@ -82,7 +86,7 @@ async def sky_transitions(
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Bad time zone given: {tz}",
-        )
+        ) from None
     output = {k.replace(" ", "_").lower(): v.timestamp() for k, v in st.items()}
     return output
 
@@ -113,7 +117,7 @@ async def day_information(
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Bad time zone given: {tz}",
-        )
+        ) from None
     output = {k.replace(" ", "_").lower(): time_format(v) for k, v in st.items()}
     day_length = st["Sunset"] - st["Sunrise"]
     return templates.TemplateResponse(

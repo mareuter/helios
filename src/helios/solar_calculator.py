@@ -1,10 +1,12 @@
-# Copyright 2023 Michael Reuter. All rights reserved.
+# Copyright 2023-2024 Michael Reuter. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-__all__ = ["SolarCalculator"]
+"""Module for calculating sun information."""
 
-from datetime import datetime, timedelta, timezone
+from __future__ import annotations
+
+from datetime import UTC, datetime, timedelta
 from importlib.resources import files
 import zoneinfo
 
@@ -13,10 +15,14 @@ from skyfield.api import load, load_file, wgs84
 
 from .exceptions import BadTimezone
 
+__all__ = ["SolarCalculator"]
+
 DATA_PATH = files("helios.skyfield").joinpath("de421.bsp")
 
 
 class SolarCalculator:
+    """Class for calculating solar information."""
+
     def __init__(self) -> None:
         self.timescale = load.timescale()
         self.ephemeris = load_file(DATA_PATH)
@@ -30,7 +36,7 @@ class SolarCalculator:
         datetime
             The current UTC datetime instance.
         """
-        return datetime.now(timezone.utc)
+        return datetime.now(UTC)
 
     @classmethod
     def get_localtime(cls, tz_name: str) -> datetime:
@@ -57,7 +63,7 @@ class SolarCalculator:
         current_datetime: datetime,
         location_timezone: str,
     ) -> dict[str, datetime]:
-        """Calculates sky transitions.
+        """Calculate sky transitions.
 
         This function calculates the eight sky transitions from astronomical
         dawn to astonomical dusk.
@@ -85,7 +91,7 @@ class SolarCalculator:
         try:
             zone = zoneinfo.ZoneInfo(location_timezone)
         except zoneinfo.ZoneInfoNotFoundError:
-            raise BadTimezone
+            raise BadTimezone from None
         now = current_datetime.astimezone(zone)
         midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
         next_midnight = midnight + timedelta(days=1)
@@ -99,7 +105,7 @@ class SolarCalculator:
 
         previous_e = f(t0).item()
         sky_transitions = {}
-        for t, e in zip(times, events):
+        for t, e in zip(times, events, strict=False):
             if previous_e < e:
                 key = f"{almanac.TWILIGHTS[e]} starts"
                 if "twilight starts" in key:
