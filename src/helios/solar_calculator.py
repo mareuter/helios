@@ -17,7 +17,7 @@ from .exceptions import BadTimezone
 
 __all__ = ["SolarCalculator"]
 
-DATA_PATH = files("helios.skyfield").joinpath("de421.bsp")
+DATA_PATH = files("helios.data.skyfield").joinpath("de421.bsp")
 
 
 class SolarCalculator:

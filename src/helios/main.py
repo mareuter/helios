@@ -24,8 +24,8 @@ from .solar_calculator import SolarCalculator
 __all__ = ["app"]
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory=str(files("helios.static"))), name="static")
-templates = Jinja2Templates(directory=str(files("helios.templates")))
+app.mount("/static", StaticFiles(directory=str(files("helios.data").joinpath("static"))), name="static")
+templates = Jinja2Templates(directory=str(files("helios.data").joinpath("templates")))
 
 
 class SkyTransitions(BaseModel):
@@ -51,7 +51,7 @@ async def root() -> dict[str, str]:
 @app.get("/favicon.ico")
 async def favicon() -> FileResponse:
     file_name = "helios.png"
-    file_path = str(files("helios.static").joinpath(file_name))
+    file_path = str(files("helios.data.static").joinpath(file_name))
     return FileResponse(
         path=file_path,
         headers={"Content-Disposition": f"attachment; filename={file_name}"},
