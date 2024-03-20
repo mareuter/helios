@@ -159,9 +159,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+.mypy_cache
+.ruff_cache
+
 .vscode
-.flake8
-.isort.cfg
-.mypy.ini
 
 .DS_Store
