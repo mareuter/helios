@@ -117,9 +117,9 @@ async def day_information(
     output = {k.replace(" ", "_").lower(): time_format(v) for k, v in st.items()}
     day_length = st["Sunset"] - st["Sunrise"]
     return templates.TemplateResponse(
+        request,
         "day_information.html",
         {
-            "request": request,
             "date": date_format(localtime),
             **output,
             "day_length": day_length_format(day_length),
