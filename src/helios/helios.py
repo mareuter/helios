@@ -6,9 +6,8 @@ __all__ = ["Helios"]
 
 from datetime import datetime, timedelta, timezone
 from importlib.resources import files
+import zoneinfo
 
-import pytz
-from pytz.exceptions import UnknownTimeZoneError
 from skyfield import almanac
 from skyfield.api import load, load_file, wgs84
 
@@ -48,7 +47,7 @@ class Helios:
             The current local time instance.
         """
         utcnow = cls.get_utc()
-        zone = pytz.timezone(tz_name)
+        zone = zoneinfo.ZoneInfo(tz_name)
         return utcnow.astimezone(zone)
 
     def sky_transitions(
@@ -84,10 +83,10 @@ class Helios:
             and the sky transition date/time.
         """
         try:
-            zone = pytz.timezone(location_timezone)
-        except UnknownTimeZoneError:
+            zone = zoneinfo.ZoneInfo(location_timezone)
+        except zoneinfo.ZoneInfoNotFoundError:
             raise BadTimezone
-        now = zone.localize(current_datetime)
+        now = current_datetime.astimezone(zone)
         midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
         next_midnight = midnight + timedelta(days=1)
 

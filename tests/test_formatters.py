@@ -3,15 +3,14 @@
 # license that can be found in the LICENSE file.
 
 import datetime
-
-import pytz
+import zoneinfo
 
 from helios.formatters import date_format, day_length_format, time_format
 
 
 def test_date_format() -> None:
     localtime = datetime.datetime(
-        2023, 3, 3, 14, 56, 0, tzinfo=pytz.timezone("US/Eastern")
+        2023, 3, 3, 14, 56, 0, tzinfo=zoneinfo.ZoneInfo("US/Eastern")
     )
     date_string = date_format(localtime)
     assert "March 3, 2023" == date_string
@@ -19,7 +18,7 @@ def test_date_format() -> None:
 
 def test_time_format() -> None:
     localtime = datetime.datetime(
-        2023, 3, 3, 14, 56, 0, tzinfo=pytz.timezone("US/Eastern")
+        2023, 3, 3, 14, 56, 0, tzinfo=zoneinfo.ZoneInfo("US/Eastern")
     )
     time_string = time_format(localtime)
     assert "14:56" == time_string

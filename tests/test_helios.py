@@ -4,9 +4,9 @@
 
 import datetime
 from unittest.mock import patch
+import zoneinfo
 
 import pytest
-import pytz
 
 from helios.exceptions import BadTimezone
 from helios.helios import Helios
@@ -68,5 +68,5 @@ def test_get_localtime() -> None:
     utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.timezone.utc)
     with patch("helios.helios.Helios.get_utc", return_value=utc):
         timezone = "US/Eastern"
-        localtime = utc.astimezone(pytz.timezone(timezone))
+        localtime = utc.astimezone(zoneinfo.ZoneInfo(timezone))
         assert Helios.get_localtime(timezone) == localtime

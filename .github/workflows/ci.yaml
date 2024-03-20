@@ -1,4 +1,4 @@
-name: "CI"
+name: "Python CI"
 
 on:
   workflow_dispatch:
@@ -7,41 +7,40 @@ on:
       - "main"
 
 jobs:
-  pre-commit:
+  lint:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        python:
+          - "3.11"
+          - "3.12"
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tox
+        uses: lsst-sqre/run-tox@v1
         with:
-          submodules: "recursive"
+          python-version: ${{ matrix.python }}
+          tox-envs: "lint"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          make init-pre-commit
-
-      - name: Run pre-commit
-        run: |
-          pre-commit run --all
-
-  unit-tests: 
+  test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        python:
+          - "3.11"
+          - "3.12"
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Run tox
+        uses: lsst-sqre/run-tox@v1
         with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          make init
-
-      - name: Run unit tests
-        run: pytest -v
+          python-version: ${{ matrix.python }}
+          tox-envs: "py,coverage-report"
