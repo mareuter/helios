@@ -9,17 +9,17 @@ import zoneinfo
 import pytest
 
 from helios.exceptions import BadTimezone
-from helios.helios import Helios
+from helios.solar_calculator import SolarCalculator
 
 
 def test_internal_parameters() -> None:
-    h = Helios()
+    h = SolarCalculator()
     assert h.ephemeris is not None
     assert h.timescale is not None
 
 
 def test_sky_transitions() -> None:
-    h = Helios()
+    h = SolarCalculator()
     current_datetime = datetime.datetime(2023, 3, 3, 14, 56, 0)
     timezone = "US/Eastern"
     latitude = 40.8939
@@ -54,7 +54,7 @@ def test_sky_transitions() -> None:
 
 
 def test_bad_timezone() -> None:
-    h = Helios()
+    h = SolarCalculator()
     current_datetime = datetime.datetime(2023, 3, 3, 14, 56, 0)
     timezone = "USA/Santiago"
     latitude = 40.8939
@@ -66,7 +66,7 @@ def test_bad_timezone() -> None:
 
 def test_get_localtime() -> None:
     utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.timezone.utc)
-    with patch("helios.helios.Helios.get_utc", return_value=utc):
+    with patch("helios.solar_calculator.SolarCalculator.get_utc", return_value=utc):
         timezone = "US/Eastern"
         localtime = utc.astimezone(zoneinfo.ZoneInfo(timezone))
-        assert Helios.get_localtime(timezone) == localtime
+        assert SolarCalculator.get_localtime(timezone) == localtime

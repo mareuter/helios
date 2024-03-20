@@ -70,7 +70,7 @@ def test_bad_timezone() -> None:
 
 def test_day_information() -> None:
     utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.timezone.utc)
-    with patch("helios.helios.Helios.get_utc", return_value=utc):
+    with patch("helios.solar_calculator.SolarCalculator.get_utc", return_value=utc):
         response = client.get(
             "/day_information",
             params={

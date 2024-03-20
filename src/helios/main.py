@@ -15,7 +15,7 @@ from pydantic import BaseModel
 
 from .exceptions import BadTimezone
 from .formatters import date_format, day_length_format, time_format
-from .helios import Helios
+from .solar_calculator import SolarCalculator
 
 __all__ = ["app"]
 
@@ -75,7 +75,7 @@ async def sky_transitions(
         description="The location's longtude coordinate. East is positive. West is negative.",
     ),
 ) -> Any:
-    h = Helios()
+    h = SolarCalculator()
     try:
         st = h.sky_transitions(lat, lon, datetime.fromtimestamp(cdatetime), tz)
     except BadTimezone:
@@ -105,7 +105,7 @@ async def day_information(
         description="The location's longtude coordinate. East is positive. West is negative.",
     ),
 ) -> Any:
-    h = Helios()
+    h = SolarCalculator()
     localtime = h.get_localtime(tz)
     try:
         st = h.sky_transitions(lat, lon, localtime.replace(tzinfo=None), tz)

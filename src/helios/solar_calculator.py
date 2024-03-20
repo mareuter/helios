@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-__all__ = ["Helios"]
+__all__ = ["SolarCalculator"]
 
 from datetime import datetime, timedelta, timezone
 from importlib.resources import files
@@ -16,7 +16,7 @@ from .exceptions import BadTimezone
 DATA_PATH = files("helios.skyfield").joinpath("de421.bsp")
 
 
-class Helios:
+class SolarCalculator:
     def __init__(self) -> None:
         self.timescale = load.timescale()
         self.ephemeris = load_file(DATA_PATH)
