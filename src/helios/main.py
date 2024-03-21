@@ -12,11 +12,13 @@ import math
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query, Request, status
+from fastapi.openapi.utils import get_openapi
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
+from . import __version__
 from .exceptions import BadTimezone
 from .formatters import date_format, day_length_format, time_format
 from .solar_calculator import SolarCalculator
@@ -41,6 +43,28 @@ class SkyTransitions(BaseModel):
 
 class DayInformation(SkyTransitions):
     day_length: float
+
+
+def set_schema() -> dict[str, Any]:
+    if app.openapi_schema:
+        return app.openapi_schema
+
+    openapi_schema = get_openapi(
+        title="Helios Web Service API",
+        version=__version__,
+        description=" ".join(
+            [
+                "This API provides sky transition information for the sun ",
+                "as well as a templated page with the same information.",
+            ]
+        ),
+        routes=app.routes,
+    )
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = set_schema  # type: ignore
 
 
 @app.get("/")
