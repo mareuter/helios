@@ -6,7 +6,6 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 from importlib.resources import files
 import math
 from typing import Any
@@ -16,7 +15,6 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
 
 from . import __version__
 from .exceptions import BadTimezone
@@ -28,21 +26,6 @@ __all__ = ["app"]
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=str(files("helios.data").joinpath("static"))), name="static")
 templates = Jinja2Templates(directory=str(files("helios.data").joinpath("templates")))
-
-
-class SkyTransitions(BaseModel):
-    astronomical_dawn: float
-    nautical_dawn: float
-    civil_dawn: float
-    sunrise: float
-    sunset: float
-    civil_dusk: float
-    nautical_dusk: float
-    astronomical_dusk: float
-
-
-class DayInformation(SkyTransitions):
-    day_length: float
 
 
 def set_schema() -> dict[str, Any]:
@@ -105,7 +88,7 @@ async def sky_transitions(
 ) -> Any:
     h = SolarCalculator()
     try:
-        st = h.sky_transitions(lat, lon, datetime.fromtimestamp(cdatetime), tz)
+        st = h.sky_transitions(lat, lon, cdatetime, tz)
     except BadTimezone:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -134,9 +117,10 @@ async def day_information(
     ),
 ) -> Any:
     h = SolarCalculator()
-    localtime = h.get_localtime(tz)
+    utctime = h.get_utc().timestamp()
+    localtime = h.get_localtime(tz, utctime)
     try:
-        st = h.sky_transitions(lat, lon, localtime.replace(tzinfo=None), tz)
+        st = h.sky_transitions(lat, lon, utctime, tz)
     except BadTimezone:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

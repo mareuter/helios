@@ -39,20 +39,22 @@ class SolarCalculator:
         return datetime.now(UTC)
 
     @classmethod
-    def get_localtime(cls, tz_name: str) -> datetime:
+    def get_localtime(cls, tz_name: str, timestamp: float | None = None) -> datetime:
         """Get the current local time as given by the timezone.
 
         Parameters
         ----------
         tz_name : str
             The timezone for finding the local time.
+        timestamp : float
+            An alternate UTC UNIX timestamp.
 
         Returns
         -------
         datetime
             The current local time instance.
         """
-        utcnow = cls.get_utc()
+        utcnow = cls.get_utc() if timestamp is None else datetime.fromtimestamp(timestamp)
         zone = zoneinfo.ZoneInfo(tz_name)
         return utcnow.astimezone(zone)
 
@@ -60,7 +62,7 @@ class SolarCalculator:
         self,
         latitude: float,
         longitude: float,
-        current_datetime: datetime,
+        current_datetime: float,
         location_timezone: str,
     ) -> dict[str, datetime]:
         """Calculate sky transitions.
@@ -76,9 +78,9 @@ class SolarCalculator:
         longitude : float
             The longitude (decimal degrees) of the location. Negative is West,
             Positive is East.
-        current_datetime : datetime
-            The current date and time to calculate the sky transitions for.
-            Only date is used.
+        current_datetime : float
+            The current date and time as a UNIX timestamp in UTC to calculate
+            the sky transitions for. Only date is used.
         location_timezone : str
             The timezone for the location.
 
@@ -92,7 +94,7 @@ class SolarCalculator:
             zone = zoneinfo.ZoneInfo(location_timezone)
         except zoneinfo.ZoneInfoNotFoundError:
             raise BadTimezone from None
-        now = current_datetime.astimezone(zone)
+        now = datetime.fromtimestamp(current_datetime).astimezone(zone)
         midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
         next_midnight = midnight + timedelta(days=1)
 
