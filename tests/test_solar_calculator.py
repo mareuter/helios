@@ -23,7 +23,7 @@ def test_internal_parameters() -> None:
 
 def test_sky_transitions() -> None:
     h = SolarCalculator()
-    current_datetime = datetime.datetime(2023, 3, 3, 14, 56, 0)
+    current_datetime = datetime.datetime(2023, 3, 3, 14, 56, 0).timestamp()
     timezone = "US/Eastern"
     latitude = 40.8939
     longitude = -83.8917
@@ -42,7 +42,7 @@ def test_sky_transitions() -> None:
 
 def test_bad_timezone() -> None:
     h = SolarCalculator()
-    current_datetime = datetime.datetime(2023, 3, 3, 14, 56, 0)
+    current_datetime = datetime.datetime(2023, 3, 3, 14, 56, 0).timestamp()
     timezone = "USA/Santiago"
     latitude = 40.8939
     longitude = -83.8917

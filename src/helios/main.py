@@ -105,7 +105,7 @@ async def sky_transitions(
 ) -> Any:
     h = SolarCalculator()
     try:
-        st = h.sky_transitions(lat, lon, datetime.fromtimestamp(cdatetime), tz)
+        st = h.sky_transitions(lat, lon, cdatetime, tz)
     except BadTimezone:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -134,9 +134,10 @@ async def day_information(
     ),
 ) -> Any:
     h = SolarCalculator()
-    localtime = h.get_localtime(tz)
+    utctime = h.get_utc().timestamp()
+    localtime = h.get_localtime(tz, utctime)
     try:
-        st = h.sky_transitions(lat, lon, localtime.replace(tzinfo=None), tz)
+        st = h.sky_transitions(lat, lon, utctime, tz)
     except BadTimezone:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
