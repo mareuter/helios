@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-__all__ = ["DayInformation", "SkyTransitions"]
+__all__ = ["DayInformation", "SkyTransitions", "TimerInformation"]
 
 
 class SkyTransitions(BaseModel):
@@ -28,3 +28,16 @@ class DayInformation(SkyTransitions):
     """Day information model."""
 
     day_length: float
+
+
+class TimerInformation(BaseModel):
+    """Timer information model."""
+
+    date: str
+    check_time_utc: float
+    sunrise_usno: str
+    sunset_usno: str
+    on_time_utc: float
+    on_time: str
+    off_time_utc: float
+    off_time: str

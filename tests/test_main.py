@@ -86,3 +86,35 @@ def test_day_information() -> None:
         assert "request" in response.context
         assert "Sun Information for March 3, 2023" in response.text
         assert "Astronomical Dawn" in response.text
+
+
+def test_timer_information() -> None:
+    utc = datetime.datetime(2023, 3, 3, 19, 56, 0, tzinfo=datetime.UTC)
+    variations = [-200, 510]
+    with (
+        patch("helios.solar_calculator.SolarCalculator.get_utc", return_value=utc),
+        patch("helios.helpers.random.randrange", side_effect=variations),
+    ):
+        response = client.get(
+            "/timer_information",
+            params={
+                "lat": 40.8939,
+                "lon": -83.8917,
+                "cdatetime": 1677880560.0,
+                "tz": "US/Eastern",
+                "checktime": "00:10:00",
+                "offtime": "22:00:00",
+                "onrange": "0:05:00",
+                "offrange": "0:10:00",
+            },
+        )
+        assert response.status_code == 200
+        output = response.json()
+        assert output["date"] == "March 3, 2023"
+        assert output["check_time_utc"] == 1677906600
+        assert output["sunrise_usno"] == "07:07"
+        assert output["sunset_usno"] == "18:29"
+        assert output["on_time_utc"] == pytest.approx(1677885923, rel=1e-1)
+        assert output["on_time"] == "18:25:23"
+        assert output["off_time_utc"] == pytest.approx(1677899310, rel=1e-1)
+        assert output["off_time"] == "22:08:30"
