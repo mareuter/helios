@@ -198,13 +198,13 @@ async def timer_information(
 
     ti = TimerInformation(
         date=date_format(localtime),
-        check_time_utc=check_time.astimezone(UTC).timestamp(),
+        check_time_utc=int(check_time.astimezone(UTC).timestamp()),
         sunrise_usno=time_format(st["Sunrise"]),
         sunset_usno=time_format(st["Sunset"]),
-        sunset_utc=st["Sunset"].astimezone(UTC).timestamp(),
-        on_time_utc=on_time.astimezone(UTC).timestamp(),
+        sunset_utc=int(st["Sunset"].astimezone(UTC).timestamp()),
+        on_time_utc=int(on_time.astimezone(UTC).timestamp()),
         on_time=on_time.strftime("%H:%M:%S"),
-        off_time_utc=off_time.astimezone(UTC).timestamp(),
+        off_time_utc=int(off_time.astimezone(UTC).timestamp()),
         off_time=off_time.strftime("%H:%M:%S"),
     )
     return ti

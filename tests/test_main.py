@@ -114,7 +114,7 @@ def test_timer_information() -> None:
         assert output["check_time_utc"] == 1677906600
         assert output["sunrise_usno"] == "07:07"
         assert output["sunset_usno"] == "18:29"
-        assert output["on_time_utc"] == pytest.approx(1677885923, rel=1e-1)
+        assert output["on_time_utc"] == 1677885923
         assert output["on_time"] == "18:25:23"
-        assert output["off_time_utc"] == pytest.approx(1677899310, rel=1e-1)
+        assert output["off_time_utc"] == 1677899310
         assert output["off_time"] == "22:08:30"

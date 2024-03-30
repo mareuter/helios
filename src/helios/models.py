@@ -34,10 +34,10 @@ class TimerInformation(BaseModel):
     """Timer information model."""
 
     date: str
-    check_time_utc: float
+    check_time_utc: int
     sunrise_usno: str
     sunset_usno: str
-    on_time_utc: float
+    on_time_utc: int
     on_time: str
-    off_time_utc: float
+    off_time_utc: int
     off_time: str
