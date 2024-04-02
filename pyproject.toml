@@ -46,7 +46,7 @@ test = [
     "pytest==8.1.1"
 ]
 lint = [
-    "pre-commit==3.6.2"
+    "pre-commit==3.7.0"
 ]
 
 [tool.setuptools_scm]
