@@ -9,7 +9,7 @@ RUN  apt update && \
 
 COPY . .
 
-RUN pip wheel --wheel-dir wheels -e .
+RUN git diff && pip wheel --wheel-dir wheels -e .
 
 FROM python:3.12-slim
 
