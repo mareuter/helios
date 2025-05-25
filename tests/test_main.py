@@ -10,8 +10,9 @@ import datetime
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
-from helios.main import app
 import pytest
+
+from helios.main import app
 
 client = TestClient(app)
 

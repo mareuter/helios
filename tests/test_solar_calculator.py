@@ -10,9 +10,10 @@ import datetime
 from unittest.mock import patch
 import zoneinfo
 
+import pytest
+
 from helios.exceptions import BadTimezone
 from helios.solar_calculator import SolarCalculator
-import pytest
 
 
 def test_internal_parameters() -> None:
