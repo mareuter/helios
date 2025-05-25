@@ -72,7 +72,7 @@ lint.select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"src/lct_web/__init__.py" = [
+"src/helios/__init__.py" = [
     "E402",
     "F401",
     "F403"
