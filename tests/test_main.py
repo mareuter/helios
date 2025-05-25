@@ -1,4 +1,4 @@
-# Copyright 2023-2024 Michael Reuter. All rights reserved.
+# Copyright 2023-2025 Michael Reuter. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -10,8 +10,9 @@ import datetime
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
-from helios.main import app
 import pytest
+
+from helios.main import app
 
 client = TestClient(app)
 

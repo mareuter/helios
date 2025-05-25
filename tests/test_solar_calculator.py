@@ -1,4 +1,4 @@
-# Copyright 2023-2024 Michael Reuter. All rights reserved.
+# Copyright 2023-2025 Michael Reuter. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -10,9 +10,10 @@ import datetime
 from unittest.mock import patch
 import zoneinfo
 
+import pytest
+
 from helios.exceptions import BadTimezone
 from helios.solar_calculator import SolarCalculator
-import pytest
 
 
 def test_internal_parameters() -> None:
