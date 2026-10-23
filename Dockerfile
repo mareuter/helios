@@ -1,4 +1,4 @@
-FROM python:3.13-slim as builder
+FROM python:3.13-slim@sha256:57b29a7c050c4e679e4bea572e14b3965cf4b5839de2da49d55e49ffc4024f39 as builder
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -11,7 +11,7 @@ COPY . .
 
 RUN git diff && pip wheel --wheel-dir wheels -e .
 
-FROM python:3.13-slim
+FROM python:3.13-slim@sha256:57b29a7c050c4e679e4bea572e14b3965cf4b5839de2da49d55e49ffc4024f39
 
 LABEL maintainer="Michael Reuter"
 LABEL org.opencontainers.image.source=https://github.com/mareuter/helios
